@@ -28,11 +28,20 @@ app.get("/api/:date?", function (req, res) {
 
   if (!inputDate) res.json(formatDateResponse(new Date()))
 
-  const date = new Date(inputDate);
+    const timestamp = Number(inputDate)
+    let date
 
-  if (isNaN(date.valueOf())) res.json({ error: 'Invalid Date' })
+    if (! isNaN(timestamp)) {
+      date = new Date(timestamp)
+    } else {
+      date = new Date(inputDate)
+    }
 
-  res.json(formatDateResponse(date));
+    if (isNaN(date.getTime())) {
+      return res.json({ error: 'Invalid Date' })
+    }
+
+  res.json(formatDateResponse(date))
 });
 
 
